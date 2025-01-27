@@ -90,7 +90,7 @@
                 <div class="row">
                     <div class="section-content d-flex justify-content-between align-items-md-center align-items-start flex-md-row flex-column">
                         <h3 class="section-title" data-aos="fade-up" data-aos-delay="0">Products</h3>
-                        <ul class="tablist nav product-tab-btn d-none d-md-inline-block" data-aos="fade-up" data-aos-delay="400">
+                        <ul class="tablist nav product-tab-btn" data-aos="fade-up" data-aos-delay="400">
                             @foreach($categories->take(6) as $index => $category)
                                 <li>
                                     <a class="nav-link {{ $index === 0 ? 'active' : '' }}" data-bs-toggle="tab" href="#{{ $category->slug }}">{{ $category->name }}</a>
