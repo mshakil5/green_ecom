@@ -1,0 +1,198 @@
+@extends('admin.layouts.admin')
+
+@section('content')
+<section class="content pt-3" id="contentContainer">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title">All Data</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Name/Email/Phone</th>
+                                    <th>Subtotal</th>
+                                    <th>Discount</th>
+                                    <th>Total</th>
+                                    <th>Payment Method</th>
+                                    <th>Status</th>
+                                    <th>Details</th>
+                                     @if (!empty($orders) && $orders->contains(function ($order) {
+                                            return $order->status == 4;
+                                        }))
+                                        <th>Action</th>
+                                    @endif
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($orders as $order)
+                                <tr>
+                                    <td>{{ \Carbon\Carbon::parse($order->purchase_date)->format('d-m-Y') }}</td>
+                                    <td>
+                                        {{ optional($order->user)->name ?? $order->name }} {{ optional($order->user)->surname ?? '' }} <br> {{ optional($order->user)->email ?? $order->email }} <br> {{ optional($order->user)->phone ?? $order->phone }}
+                                    </td>
+                                    <td>{{ number_format($order->subtotal_amount, 2) }}</td>
+                                    <td>{{ number_format($order->discount_amount, 2) }}</td>
+                                    <td>{{ number_format($order->net_amount, 2) }}</td>
+                                    <td>
+                                        @if($order->payment_method == 'cashOnDelivery')
+                                            Cash On Delivery
+                                        @elseif($order->payment_method == 'stripe')
+                                            Stripe
+                                        @elseif($order->payment_method == 'paypal')
+                                            PayPal
+                                        @else
+                                            {{ ucfirst($order->payment_method) }}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <select class="form-control order-status" data-order-id="{{ $order->id }}">
+                                            <option value="1" {{ $order->status == 1 ? 'selected' : '' }}>Pending</option>
+                                            <option value="2" {{ $order->status == 2 ? 'selected' : '' }}>Processing</option>
+                                            <option value="3" {{ $order->status == 3 ? 'selected' : '' }}>Packed</option>
+                                            <option value="4" {{ $order->status == 4 ? 'selected' : '' }}>Shipped</option>
+                                            <option value="5" {{ $order->status == 5 ? 'selected' : '' }}>Delivered</option>
+                                            <option value="6" {{ $order->status == 6 ? 'selected' : '' }}>Returned</option>
+                                            <option value="7" {{ $order->status == 7 ? 'selected' : '' }}>Cancelled</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.orders.details', ['orderId' => $order->id]) }}" class="btn btn-primary">Details</a>
+                                    </td>
+                                    @if ($order->status == 4)
+                                        <td>
+                                            <select class="form-control select-delivery-man" data-order-id="{{ $order->id }}">
+                                                <option value="">Select Delivery Man</option>
+                                                @foreach ($deliveryMen as $deliveryMan)
+                                                    <option value="{{ $deliveryMan->id }}" {{ $order->delivery_man_id == $deliveryMan->id ? 'selected' : '' }}>
+                                                        {{ $deliveryMan->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                    @endif
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id='loading' style='display:none ;'>
+    <img src="{{ asset('loader.gif') }}" id="loading-image" alt="Loading..." />
+</div>
+
+<style>
+    #loading {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0.7;
+    background-color: #fff;
+    z-index: 99;
+}
+
+    #loading-image {
+        z-index: 100;
+    }
+</style>
+@endsection
+
+@section('script')
+<script>
+    $(function () {
+        $("#example1").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+        $('.order-status').change(function() {
+            const orderId = $(this).data('order-id');
+            const status = $(this).val();
+
+            $.ajax({
+                url: '/admin/orders/update-status',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    order_id: orderId,
+                    status: status
+                },
+                beforeSend: function() {
+                    $('#loading').show();
+                },
+                success: function(response) {
+                    swal({
+                        text: "Status changed",
+                        icon: "success",
+                        button: {
+                            text: "OK",
+                            className: "swal-button--confirm"
+                        }
+                    }).then(() => {
+                        location.reload();
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                },
+                complete: function() {
+                    $('#loading').hide();
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('.select-delivery-man').change(function() {
+            const orderId = $(this).data('order-id');
+            const deliveryManId = $(this).val();
+            // console.log(orderId, deliveryManId);
+
+            $.ajax({
+                url: '/admin/orders/update-delivery-man', 
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    order_id: orderId,
+                    delivery_man_id: deliveryManId
+                },
+                success: function(response) {
+                    // console.log(response);
+                    swal({
+                        text: "Status changed",
+                        icon: "success",
+                        button: {
+                            text: "OK",
+                            className: "swal-button--confirm"
+                        }
+                    }).then(() => {
+                        location.reload();
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+
+@endsection

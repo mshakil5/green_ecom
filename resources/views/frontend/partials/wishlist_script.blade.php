@@ -1,0 +1,112 @@
+<script>
+    $(document).ready(function() {
+        function updateWishlistCount() {
+            var wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            var wishlistCount = wishlist.length;
+            $('.wishlistCount').text(wishlistCount);
+        }
+
+        function updateHeartIcon(productId, offerId) {
+            var wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            var isInWishlist = wishlist.some(item => item.productId === productId && item.offerId === offerId);
+            var wishlistButton = $('.add-to-wishlist[data-product-id="' + productId + '"][data-offer-id="' + offerId + '"]');
+            if (isInWishlist) {
+                wishlistButton.attr('title', 'Already in wishlist'); 
+                wishlistButton.find('span').text('Already in wishlist');
+            } else {
+                wishlistButton.attr('title', 'Add to wishlist');
+                wishlistButton.find('span').text('Add to wishlist');
+            }
+        }
+
+        updateWishlistCount();
+
+        $(document).on('click', '.add-to-wishlist', function(e) {
+            e.preventDefault();
+            var productId = $(this).data('product-id');
+            var offerId = $(this).data('offer-id');
+            var price = $(this).data('price');
+            console.log(`ProductId: ${productId}, OfferId: ${offerId}, Price: ${price}`);
+            var productImg = $(this).data('image');
+            var campaignId = $(this).data('campaign-id') || null;
+            var wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+            // console.log(JSON.parse(localStorage.getItem('wishlist')));
+
+            var itemIndex = wishlist.findIndex(item => 
+                item.productId === productId && 
+                item.offerId === offerId && 
+                (campaignId === null || item.campaignId === campaignId)
+            );
+
+            if (itemIndex !== -1) {
+                toastr.info("This product is already in your wishlist", "Info");
+            } else {
+                wishlist.push({ productId: productId, offerId: offerId, price: price, campaignId: campaignId });
+                var wishlistCount = wishlist.length;
+                $('#wishlist-product-img').attr('src', productImg);
+                $('#modalAddWishlist .wishlistCount').text(wishlistCount);
+                $('#modalAddWishlist').modal('show');
+            }
+
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            updateHeartIcon(productId, offerId);
+            updateWishlistCount();
+        });
+
+        $(document).on('click', '.wishlistBtn', function(e){
+            e.preventDefault();
+            var wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+            // console.log(JSON.parse(localStorage.getItem('wishlist')));
+            // localStorage.removeItem('wishlist');
+            
+            $.ajax({
+                url: "{{ route('wishlist.store') }}",
+                method: "PUT",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    wishlist: JSON.stringify(wishlist)
+                },
+                success: function() {
+                    window.location.href = "{{ route('wishlist.index') }}";
+                }
+            });
+        });
+
+        $('.add-to-wishlist').each(function() {
+            var productId = $(this).data('product-id');
+            var offerId = $(this).data('offer-id');
+            updateHeartIcon(productId, offerId);
+        });
+
+        $(document).on('click', '.modal-close', function() {
+            $('#modalAddWishlist').modal('hide');
+        });
+
+        $(document).on('click', '.remove-from-wishlist', function (e) {
+            e.preventDefault();
+
+            var productId = $(this).data('product-id');
+            var offerId = $(this).data('offer-id');
+            var wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+            var itemIndex = wishlist.findIndex(item => item.productId === productId && item.offerId === offerId);
+
+            if (itemIndex !== -1) {
+                wishlist.splice(itemIndex, 1);
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+
+                $(this).closest('tr').fadeOut('fast', function () {
+                    $(this).remove();
+                });
+
+                toastr.success("Product removed from wishlist", "Success");
+                updateWishlistCount();
+            } else {
+                toastr.error("Product not found in wishlist", "Error");
+            }
+        });
+
+    });
+</script>
