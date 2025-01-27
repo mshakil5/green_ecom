@@ -40,12 +40,8 @@
                                         <label>Type <span style="color: red;">*</span></label>
                                         <select  class="form-control" id="type" name="type">
                                             <option value="">Select</option>
-                                            <option value="Refrigeration">Refrigeration</option>
-                                            <option value="Cooking">Cooking</option>
-                                            <option value="Appliances">Appliances</option>
-                                            <option value="Food Preparation">Food Preparation</option>
-                                            <option value="Beverage">Beverage</option>
-                                            <option value="Stainless Steel">Stainless Steel</option>
+                                            <option value="Product">Product</option>
+                                            <option value="Service">Service</option>
 
                                         </select>
                                     </div>
