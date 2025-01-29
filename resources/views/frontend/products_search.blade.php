@@ -1,7 +1,9 @@
 @extends('frontend.layouts.app')
 @section('title', $title)
 @section('content')
-
+@php
+    $company = \App\Models\CompanyDetails::select('company_logo','currency')->first();
+@endphp
 <div class="breadcrumb-section d-none">
     <div class="breadcrumb-wrapper">
         <div class="container">
@@ -148,7 +150,7 @@
                                                                 $delprice = $product->price * .10 + $product->price;
                 
                                                             @endphp
-                                                            <span class="product-default-price"><del class="product-default-price-off">${{ number_format($delprice, 2) }}</del> ${{ number_format($product->price, 2) }}</span>
+                                                            <span class="product-default-price"><del class="product-default-price-off">{{$company->currency}}{{ number_format($delprice, 2) }}</del> {{$company->currency}}{{ number_format($product->price, 2) }}</span>
                                                         </div>
                                                     </div> <!-- End Product Defautlt Single -->
                                                 </div>

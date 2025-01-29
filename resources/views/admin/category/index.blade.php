@@ -41,7 +41,9 @@
                                         <select  class="form-control" id="type" name="type">
                                             <option value="">Select</option>
                                             <option value="Product">Product</option>
+                                            <option value="Spare">Spare Parts</option>
                                             <option value="Service">Service</option>
+                                            <option value="VFR">VFR</option>
 
                                         </select>
                                     </div>

@@ -1,9 +1,8 @@
 @extends('frontend.layouts.app')
 
 @section('content')
-
 @php
-    $company = \App\Models\CompanyDetails::select('company_logo')->first();
+    $company = \App\Models\CompanyDetails::select('company_logo','currency')->first();
 @endphp
 
 
@@ -194,7 +193,7 @@
                                                     $delprice = $product->price * .10 + $product->price;
     
                                                 @endphp
-                                                <span class="product-default-price"><del class="product-default-price-off">${{ number_format($delprice, 2) }}</del> ${{ number_format($product->price, 2) }}</span>
+                                                <span class="product-default-price"><del class="product-default-price-off">{{$company->currency}}{{ number_format($delprice, 2) }}</del> {{$company->currency}}{{ number_format($product->price, 2) }}</span>
                                             </div>
                                         </div>
                                         @endforeach
@@ -339,7 +338,7 @@
                                                                         $delprice = $product->price * .10 + $product->price;
                         
                                                                     @endphp
-                                                                    <span class="product-default-price"><del class="product-default-price-off">${{ number_format($delprice, 2) }}</del> ${{ number_format($product->price, 2) }}</span>
+                                                                    <span class="product-default-price"><del class="product-default-price-off">{{$company->currency}}{{ number_format($delprice, 2) }}</del> {{$company->currency}}{{ number_format($product->price, 2) }}</span>
                                                                 </div>
                                                             </div> <!-- End Product Defautlt Single -->
                                                         </div>
@@ -493,7 +492,7 @@
                                                                     $delprice = $product->price * .10 + $product->price;
                     
                                                                 @endphp
-                                                                <span class="product-default-price"><del class="product-default-price-off">${{ number_format($delprice, 2) }}</del> ${{ number_format($product->price, 2) }}</span>
+                                                                <span class="product-default-price"><del class="product-default-price-off">{{$company->currency}}{{ number_format($delprice, 2) }}</del> {{$company->currency}}{{ number_format($product->price, 2) }}</span>
                                                             </div>
                                                         </div> <!-- End Product Defautlt Single -->
                                                     </div>
@@ -621,7 +620,7 @@
                                             $delprice = $product->price * .10 + $product->price;
 
                                         @endphp
-                                        <span class="product-default-price"><del class="product-default-price-off">${{ number_format($delprice, 2) }}</del> ${{ number_format($product->price, 2) }}</span>
+                                        <span class="product-default-price"><del class="product-default-price-off">{{$company->currency}}{{ number_format($delprice, 2) }}</del> {{$company->currency}}{{ number_format($product->price, 2) }}</span>
                                     </div>
                                 </div>
                                 @endforeach

@@ -2,6 +2,9 @@
 @section('title', $title)
 @section('content')
 
+@php
+    $company = \App\Models\CompanyDetails::select('company_logo','currency')->first();
+@endphp
 
 
 <div class="breadcrumb-section d-none">
@@ -171,14 +174,7 @@
                     <div class="product-details-text">
                         <p>{!! $product->short_description !!}</p>
                         <br>
-                        <div style="display: flex; align-items: center; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 5px;">
-                            <i class="fa fa-truck" style="font-size: 24px; color: red; margin-right: 10px;"></i>
-                            <span style="font-size: 16px; color: #000;">Free delivery on orders over £150</span>
-                        </div>
-                        <div style="display: flex; align-items: center; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 5px;">
-                            <i class="fa fa-check-circle" style="font-size: 24px; color: green; margin-right: 10px;"></i>
-                            <span style="font-size: 16px; color: #000;">1 Year Parts Warranty Included</span>
-                        </div>
+                        
                     </div>
                     
 
@@ -432,7 +428,7 @@
                                                 $delprice = $product->price * .10 + $product->price;
 
                                             @endphp
-                                            <span class="product-default-price"><del class="product-default-price-off">${{ number_format($delprice, 2) }}</del> ${{ number_format($product->price, 2) }}</span>
+                                            <span class="product-default-price"><del class="product-default-price-off">{{$company->currency}}{{ number_format($delprice, 2) }}</del> {{$company->currency}}{{ number_format($product->price, 2) }}</span>
                                         </div>
                                     </div>
                                 @endforeach

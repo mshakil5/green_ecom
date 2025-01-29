@@ -90,7 +90,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6">
                     <div class="copyright-area">
-                        <p class="copyright-area-text">Copyright &copy; {{ date('Y') }} <a class="copyright-link" href="https://mentosoftware.co.uk/">Mentosoftware</a></p>
+                        {{-- <p class="copyright-area-text">Copyright &copy; {{ date('Y') }} <a class="copyright-link" href="#">Shakil</a></p> --}}
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6">

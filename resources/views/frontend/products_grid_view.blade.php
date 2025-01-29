@@ -2,6 +2,10 @@
 
 @section('content')
 
+@php
+    $currency = \App\Models\CompanyDetails::value('currency');
+@endphp
+
 <div class="breadcrumb-section">
     <div class="breadcrumb-wrapper">
         <div class="container">
@@ -28,6 +32,7 @@
             <div class="col-lg-3">
                 <div class="siderbar-section" data-aos="fade-up"  data-aos-delay="0">
                     <input type="text" id="ptype" value="{{ $ptype }}" hidden>
+                    <input type="hidden" id="currency" value="{{$currency}}">
                     <div class="sidebar-single-widget">
                         <h6 class="sidebar-title">FILTER BY PRICE</h6>
                         <div class="sidebar-content">
@@ -194,6 +199,7 @@
 
 <script>
     $(document).ready(function () {
+        var currency = $('#currency').val();
         var minPrice = {{ $minPrice }};
         var maxPrice = {{ $maxPrice }};
         var selectedCategories = [];
@@ -207,7 +213,7 @@
             max: maxPrice,
             values: [minPrice, maxPrice],
             slide: function (event, ui) {
-                $("#amount").val("£" + ui.values[0] + " - £" + ui.values[1]);
+                $("#amount").val(currency + ui.values[0] + " - " + currency + ui.values[1]);
             },
             change: function (event, ui) {
                 $("#price-min").val(ui.values[0]);
@@ -216,8 +222,8 @@
             },
         });
 
-        $("#amount").val("£" + $("#slider-range").slider("values", 0) +
-            " - £" + $("#slider-range").slider("values", 1));
+        $("#amount").val(currency + $("#slider-range").slider("values", 0) +
+            " - " + currency + $("#slider-range").slider("values", 1));
 
         function prepareFilterData() {
             selectedCategories = $("input[name='category']:checked").map(function () {
@@ -331,7 +337,7 @@
                                 </div>
                                 <div class="product-default-content">
                                     <h6 class="product-default-link"><a href="{{ route('product.show', '') }}/${product.slug}">${product.name}</a></h6>
-                                    <span class="product-default-price"><del class="product-default-price-off">$${delPrice}</del> $${formattedPrice}</span>
+                                    <span class="product-default-price"><del class="product-default-price-off">${response.currency}${delPrice}</del> ${response.currency}${formattedPrice}</span>
                                 </div>
                             </div>
                         </div>

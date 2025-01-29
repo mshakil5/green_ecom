@@ -397,7 +397,10 @@ class FrontendController extends Controller
             return $product;
         });
 
-        return response()->json(['products' => $products]);
+
+
+        $currency = CompanyDetails::value('currency');
+        return response()->json(['products' => $products, 'currency' => $currency]);
     }
 
     public function showCategoryProducts($slug)
@@ -787,7 +790,8 @@ class FrontendController extends Controller
             return $product;
         });
 
-        return response()->json(['products' => $products]);
+        $currency = CompanyDetails::value('currency');
+        return response()->json(['products' => $products,'currency' => $currency]);
     }
 
     public function clearAllSessionData()
