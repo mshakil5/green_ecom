@@ -43,7 +43,7 @@
                                             <option value="Product">Product</option>
                                             <option value="Spare">Spare Parts</option>
                                             <option value="Service">Service</option>
-                                            <option value="VFR">VFR</option>
+                                            <option value="VRF">VRF</option>
 
                                         </select>
                                     </div>
