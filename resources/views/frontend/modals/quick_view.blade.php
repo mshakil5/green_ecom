@@ -22,7 +22,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="product-details-content-area">
-                                <div class="product-details-text">
+                                <div class="">
                                     <h4 class="title" id="modal-product-name"></h4>
                                     <div class="price" id="modal-product-price"></div>
                                     {{-- <p id="modal-product-description"></p> --}}
@@ -48,9 +48,23 @@
                                         {{-- <li class="d-inline-block me-2"><a href="#" class="form-submit-btn add-to-wishlist" data-product-id1="" data-offer-id="0" data-price=""><i class="icon-heart"></i>Add to wishlist</a></li> --}}
                                         <input type="hidden" id="modal-card-product-id" value="">
                                         <input type="hidden" id="modal-card-product-price" value="">
-                                        <li class="d-inline-block"><a id="add-to-card-modal-button" href="#" class="contact-submit-btn add-to-cart"  data-product-id="" data-offer-id="0" data-price="" data-image="">
+                                        <li class="d-inline-block mb-4"><a id="add-to-card-modal-button" href="#" class="contact-submit-btn add-to-cart"  data-product-id="" data-offer-id="0" data-price="" data-image="">
                                             <i class="icon-shopping-cart"></i>Add To Cart</a>
                                         </li>
+
+                                        <div style="display: flex; align-items: center; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 5px;width: 100%;">
+                                            <i class="fa fa-truck" style="font-size: 24px; color: red; margin-right: 10px;"></i>
+                                            <span style="font-size: 16px; color: #000;">Delivery all over Bangladesh</span>
+                                        </div>
+                                        <div style="display: flex; align-items: center; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 5px;width: 100%;">
+                                            <i class="fa fa-truck" style="font-size: 24px; color: red; margin-right: 10px;"></i>
+                                            <span style="font-size: 16px; color: #000;">Home delivery within 2-5 days</span>
+                                        </div>
+                                        <div style="display: flex; align-items: center; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 5px;width: 100%;">
+                                            <i class="fa fa-check-circle" style="font-size: 24px; color: green; margin-right: 10px;"></i>
+                                            <span style="font-size: 16px; color: #000;">Cash on Delivery Available</span>
+                                        </div>
+
                                     </ul>
                                 </div>
                             </div>

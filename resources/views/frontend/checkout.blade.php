@@ -249,19 +249,21 @@
                             </div>
 
                             <div class="payment_method">
-                                {{-- <div class="panel-default">
+                                <div class="panel-default">
                                     <label class="checkbox-default collapsed" for="currencyCod" data-bs-toggle="collapse" data-bs-target="#methodCod" aria-expanded="false">
-                                        <input type="checkbox" id="currencyCod">
+                                        <input type="checkbox" id="currencyCod" checked>
+                                        <input type="checkbox" class="custom-control-input" name="payment_method" id="cashOnDelivery" value="cashOnDelivery">
+                                        <label class="custom-control-label" for="cashOnDelivery">Cash On Delivery</label>
                                         <span>Cash on Delivery</span>
                                     </label>
 
-                                    <div id="methodCod" class="collapse" data-parent="#methodCod" style="">
+                                    <div id="methodCod" class="collapse show" data-parent="#methodCod" style="">
                                         <div class="card-body1">
-                                            <p>Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
+                                            <p>Please check your address before proceed to order.</p>
                                         </div>
                                     </div>
-                                </div> --}}
-                                <div class="panel-default">
+                                </div>
+                                {{-- <div class="panel-default">
                                     <label class="checkbox-default" for="currencyPaypal" data-bs-toggle="collapse" data-bs-target="#methodPaypal" aria-expanded="true">
                                         <input type="checkbox" id="currencyPaypal" checked>
                                         <span>PayPal</span>
@@ -274,9 +276,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="order_button pt-15">
-                                    <button class="btn-order btn-block" type="submit" id="placeOrderBtn">Proceed to PayPal</button>
+                                    <button class="btn-order btn-block" type="submit" id="placeOrderBtn">Proceed to Order</button>
                                 </div>
                             </div>
 

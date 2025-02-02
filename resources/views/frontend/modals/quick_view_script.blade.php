@@ -34,7 +34,7 @@
             $('#modal-card-product-price').val(productPrice);
 
             $('#modal-product-name').text(productName);
-            $('#modal-product-price').html(`£ ${productPrice}`);
+            $('#modal-product-price').html(`৳ ${productPrice}`);
             $('#modal-product-quantity').attr('max', productStock);
 
             $('#modal-product-image').attr('src', productImage);
