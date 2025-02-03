@@ -562,7 +562,20 @@ class FrontendController extends Controller
     {
         $cart = json_decode($request->input('cart'), true);
         $vatPercent = CompanyDetails::value('vat_percent');
-        return view('frontend.checkout', compact('cart', 'vatPercent'));
+        $companyAddress1 = CompanyDetails::value('address1');
+        return view('frontend.checkout', compact('cart', 'vatPercent','companyAddress1'));
+    }
+
+    public function privacyPolicy()
+    {
+        $companyDetails = CompanyDetails::select('privacy_policy')->first();
+        return view('frontend.privacy', compact('companyDetails'));
+    }
+
+    public function termsAndConditions()
+    {
+        $companyDetails = CompanyDetails::select('terms_and_conditions')->first();
+        return view('frontend.terms', compact('companyDetails'));
     }
 
     public function search(Request $request)

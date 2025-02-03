@@ -48,6 +48,10 @@ Route::get('/category-products', [FrontendController::class, 'getCategoryProduct
 Route::get('/get-products/{ptype?}', [FrontendController::class, 'getDiffTypeProducts'])->name('getDiffTypeProducts');
 
 
+Route::get('/privacy-policy', [FrontendController::class, 'privacyPolicy'])->name('frontend.privacy-policy');
+Route::get('/terms-and-conditions', [FrontendController::class, 'termsAndConditions'])->name('frontend.terms-and-conditions');
+
+
 //Check Coupon
 Route::get('/check-coupon', [FrontendController::class, 'checkCoupon']);
 Route::get('/order/success', [OrderController::class, 'orderSuccess'])->name('order.success');
