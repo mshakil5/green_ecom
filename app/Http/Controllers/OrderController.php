@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderConfirmation;
 use App\Models\ContactEmail;
 use App\Mail\OrderStatusChangedMail;
+use App\Models\ProductWarranty;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
@@ -193,7 +194,7 @@ class OrderController extends Controller
                 $encoded_order_id = base64_encode($order->id);
                 $pdfUrl = route('generate-pdf', ['encoded_order_id' => $encoded_order_id]);
 
-                $this->sendOrderEmail($order, $pdfUrl);
+                // $this->sendOrderEmail($order, $pdfUrl);
 
                 if ($order->discount_amount > 0 && isset($formData['coupon_id'])) {
                     $couponUsage = new CouponUsage();
@@ -378,7 +379,7 @@ class OrderController extends Controller
             $encoded_order_id = base64_encode($order->id);
             $pdfUrl = route('generate-pdf', ['encoded_order_id' => $encoded_order_id]);
 
-            $this->sendOrderEmail($order, $pdfUrl);
+            // $this->sendOrderEmail($order, $pdfUrl);
 
             if ($order->discount_amount > 0 && isset($formData['coupon_id'])) {
                 $couponUsage = new CouponUsage();
@@ -573,7 +574,7 @@ class OrderController extends Controller
             $encoded_order_id = base64_encode($order->id);
             $pdfUrl = route('generate-pdf', ['encoded_order_id' => $encoded_order_id]);
 
-            $this->sendOrderEmail($order, $pdfUrl);
+            // $this->sendOrderEmail($order, $pdfUrl);
 
             if ($order->discount_amount > 0 && isset($formData['coupon_id'])) {
                 $couponUsage = new CouponUsage();
