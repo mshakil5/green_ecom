@@ -12,8 +12,8 @@
                             <img 
                             src="{{ asset('images/company/' . $company->company_logo) }}" 
                             alt="{{ $company->company_name }}" 
-                            width="105" 
-                            height="25" 
+                            width="171" 
+                            height="81" 
                             style="object-fit: contain; display: block;">
                         </a>
                     </div>
@@ -41,6 +41,21 @@
                                 <i class="icon-shopping-cart"></i>
                                 <span class="header-action-icon-item-count cartCount">0</span>
                             </a>
+                        </li>
+                        <li class="has-user-dropdown">
+                            <a href=""><i class="icon-user"></i></a>
+                            <ul class="user-sub-menu">
+                                @if (Auth::check())
+                                    <li><a href="{{ route('user.dashboard') }}">My Dashboard</a></li>
+                                    <li><a href="{{ route('orders.index') }}">My Orders</a></li>
+                                    <li><a href="{{ route('user.profile') }}">My Profile</a></li>
+
+                                @else
+                                    <li><a href="{{ route('login') }}">Sign In</a></li>
+                                    <li><a href="{{ route('register') }}">Sign Up</a></li>
+                                    
+                                @endif
+                            </ul>
                         </li>
                     </ul>
                 </div>
