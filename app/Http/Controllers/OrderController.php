@@ -681,12 +681,11 @@ class OrderController extends Controller
 
     public function orderSuccess(Request $request)
     {
-        $decodedId = base64_decode($request->order_id);
-        $orderDetails = Order::findOrFail($decodedId);
-    
-        $pdfUrl = route('generate-pdf', ['encoded_order_id' => base64_encode($orderDetails->id)]);
-    
-        return view('frontend.order.success', compact('pdfUrl', 'orderDetails'));
+        return redirect()->to($request->pdfUrl);
+        
+        // $decodedId = base64_decode($request->order_id);
+        // $orderDetails = Order::findOrFail($decodedId);
+        // return view('frontend.order.success', compact('pdfUrl', 'orderDetails'));
     }
 
     public function generatePDF($encoded_order_id)

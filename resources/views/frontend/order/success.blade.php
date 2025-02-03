@@ -8,13 +8,6 @@
     <p>Inv: {{$orderDetails->invoice}}</p>
     <div class="d-none">
     <p>ID: {{$orderDetails->id}}</p>
-    <p>encode: {{base64_encode($orderDetails->id)}} </p>
-    <p>decode: {{base64_decode(base64_encode($orderDetails->id))}} </p>
-    @php
-        $encode_id = base64_encode($orderDetails->id);
-    @endphp
-    
-    <p>phpencode: {{$encode_id}} </p>
     </div>
 
     <a href="{{ route('generate-pdf', ['encoded_order_id' => base64_encode($orderDetails->id)]) }}" class="btn btn-primary mt-4" target="_blank">
