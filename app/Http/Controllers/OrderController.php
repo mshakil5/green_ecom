@@ -37,21 +37,29 @@ class OrderController extends Controller
     public function placeOrder(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'surname' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:20',
-            'house_number' => 'required|string|max:255',
-            'street_name' => 'required|string|max:255',
-            'town' => 'required|string|max:255',
-            'postcode' => 'required|string|max:20',
+            'name' => 'nullable|string|max:255',
+            'surname' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|string|max:20',
+            'house_number' => 'nullable|string|max:255',
+            'street_name' => 'nullable|string|max:255',
+            'town' => 'nullable|string|max:255',
+            'postcode' => 'nullable|string|max:20',
+            'billing_name' => 'nullable|string|max:255',
+            'billing_surname' => 'nullable|string|max:255',
+            'billing_email' => 'nullable|email|max:255',
+            'billing_phone' => 'nullable|string|max:20',
+            'billing_house_number' => 'nullable|string|max:255',
+            'billing_street_name' => 'nullable|string|max:255',
+            'billing_town' => 'nullable|string|max:255',
+            'billing_postcode' => 'nullable|string|max:20',
             'note' => 'nullable|string|max:255',
             'payment_method' => 'required',
             'order_summary.*.quantity' => 'required|numeric|min:1',
             'order_summary.*.size' => 'nullable|string|max:255',
             'order_summary.*.color' => 'nullable|string|max:255',
         ], [
-            'name.required' => 'Please enter your name.',
+            'name.required' => 'Please enter your first name.',
             'surname.required' => 'Please enter your last name.',
             'email.required' => 'Please enter your email.',
             'phone.required' => 'Please enter your phone number.',
@@ -59,7 +67,31 @@ class OrderController extends Controller
             'street_name.required' => 'Please enter your street name.',
             'town.required' => 'Please enter your town.',
             'postcode.required' => 'Please enter your postcode.',
+            'billing_name.required' => 'Please enter your billing first  name.',
+            'billing_surname.required' => 'Please enter your billing last name.',
+            'billing_email.required' => 'Please enter your billing email.',
+            'billing_phone.required' => 'Please enter your phone billing number.',
+            'billing_house_number.required' => 'Please enter your billing house number.',            
+            'billing_street_name.required' => 'Please enter your billing street name.',
+            'billing_town.required' => 'Please enter your billing town.',            
+            'billing_postcode.required' => 'Please enter your billing postcode.',
         ]);
+
+        if ($request->input('is_ship') == 1 && $request->input('way') !== "express") {
+            $validator->sometimes(
+                ['name', 'surname', 'email', 'phone', 'house_number', 'street_name', 'town', 'postcode'], 
+                'required|string|max:255', 
+                function ($input) {
+                    return true;
+                }
+            );
+        }
+
+        if ($request->input('is_billing_same') == 0 && $request->input('way') !== "express") {
+            $validator->sometimes(['billing_name', 'billing_surname', 'billing_email', 'billing_phone', 'billing_house_number', 'billing_street_name', 'billing_town', 'billing_postcode'], 'required|string|max:255', function ($input) {
+                return true;
+            });
+        }
 
         if ($validator->fails()) {
             return response()->json([
@@ -70,11 +102,13 @@ class OrderController extends Controller
         $formData = $request->all();
         $pdfUrl = null;
         $subtotal = 0.00;
+        $subtotalWithWarranty = 0.00;
         $discountAmount = 0.00;
 
         foreach ($formData['order_summary'] as $item) {
             $product = Product::findOrFail($item['productId']);
             $totalPrice = (float) $item['quantity'] * (float) $product->price;
+            $totalPriceWithWarranty = $totalPrice;
 
             if (isset($item['offerId'])) {
                 if ($item['offerId'] == 1) {
@@ -94,7 +128,17 @@ class OrderController extends Controller
                 }
             }
 
+            if (isset($item['warrantyId'])) {
+                $warrantyDetail = ProductWarranty::find($item['warrantyId']);
+        
+                if ($warrantyDetail) {
+                    $warrantyPriceIncrease = ($product->price * $warrantyDetail->price_increase_percent) / 100;
+                    $totalPriceWithWarranty += $warrantyPriceIncrease * $item['quantity'];
+                }
+            }
+
             $subtotal += $totalPrice;
+            $subtotalWithWarranty += $totalPriceWithWarranty; 
         }
 
         $discountAmount = $formData['discount_amount'] ?? 0.00;
@@ -103,31 +147,32 @@ class OrderController extends Controller
         $vat_amount = ($subtotal * $vat_percent) / 100;
 
         $shippingAmount = $formData['delivery_charge'] ?? 0;
-        $netAmount = $subtotal - $discountAmount + $vat_amount + $shippingAmount;
+        $netAmount = $subtotalWithWarranty - $discountAmount + $vat_amount + $shippingAmount;
 
         if ($formData['payment_method'] === 'paypal') {
             return $this->initiatePayPalPayment($netAmount, $formData);
         }elseif ($formData['payment_method'] === 'stripe') {
-            return $this->initiateStripePayment($netAmount, $formData);
+            return $this->initiateStripePayment($netAmount, $formData, $subtotalWithWarranty, $discountAmount, $vat_amount, $shippingAmount, $subtotal);
         }else {
-            DB::transaction(function () use ($formData, &$pdfUrl, $subtotal, $discountAmount) {
+            DB::transaction(function () use ($formData, &$pdfUrl, $subtotal, $subtotalWithWarranty, $discountAmount) {
                 $order = new Order();
                 if (auth()->check()) {
                     $order->user_id = auth()->user()->id;
                 }
                 $order->invoice = random_int(100000, 999999);
                 $order->purchase_date = now()->format('Y-m-d');
-                $order->name = $formData['name'];
-                $order->surname = $formData['surname'];
-                $order->email = $formData['email'];
-                $order->phone = $formData['phone'];
-                $order->house_number = $formData['house_number'];
-                $order->street_name = $formData['street_name'];
-                $order->town = $formData['town'];
-                $order->postcode = $formData['postcode'];
-                $order->note = $formData['note'];
+                $order->name = $formData['name'] ?? '';
+                $order->surname = $formData['surname'] ?? '';
+                $order->email = $formData['email'] ?? '';
+                $order->phone = $formData['phone'] ?? '';
+                $order->house_number = $formData['house_number'] ?? '';
+                $order->street_name = $formData['street_name']?? '';
+                $order->town = $formData['town'] ?? '';
+                $order->postcode = $formData['postcode'] ?? '';
+                $order->note = $formData['note'] ?? '';
                 $order->payment_method = $formData['payment_method'];
                 $order->shipping_amount = $formData['delivery_charge'] ?? 0;
+                $order->is_ship = $formData['is_ship'];
                 $order->status = 1;
                 $order->admin_notify = 1;
                 $order->order_type = 0;
@@ -137,7 +182,7 @@ class OrderController extends Controller
                 $vat_amount = ($subtotal * $vat_percent) / 100;
                 $order->vat_percent = $vat_percent;
                 $order->vat_amount = $vat_amount;
-                $order->net_amount = $subtotal + $order->vat_amount + $order->shipping_amount - $discountAmount;
+                $order->net_amount = $subtotalWithWarranty + $vat_amount + $formData['delivery_charge'] - $discountAmount;
     
                 if (auth()->check()) {
                     $order->created_by = auth()->user()->id;
@@ -174,8 +219,10 @@ class OrderController extends Controller
                 if (isset($formData['order_summary']) && is_array($formData['order_summary'])) {
                     foreach ($formData['order_summary'] as $item) {
                         $product = Product::findOrFail($item['productId']);
-    
+                    
                         $totalPrice = (float) $item['quantity'] * (float) $product->price;
+                        $pricePerUnit = (float) $product->price;
+    
                         if (isset($item['offerId'])) {
                             if ($item['offerId'] == 1) {
                                 $specialOfferDetail = SpecialOfferDetails::where('product_id', $item['productId'])
@@ -183,6 +230,7 @@ class OrderController extends Controller
                                     ->first();
                                 if ($specialOfferDetail) {
                                     $totalPrice = (float) $item['quantity'] * (float) $specialOfferDetail->offer_price;
+                                    $pricePerUnit = (float) $specialOfferDetail->offer_price;
                                 }
                             } elseif ($item['offerId'] == 2) {
                                 $flashSellDetail = FlashSellDetails::where('product_id', $item['productId'])
@@ -190,28 +238,39 @@ class OrderController extends Controller
                                     ->first();
                                 if ($flashSellDetail) {
                                     $totalPrice = (float) $item['quantity'] * (float) $flashSellDetail->flash_sell_price;
+                                    $pricePerUnit = (float) $flashSellDetail->flash_sell_price;
                                 }
                             }
                         }
-    
+                    
+                        if (isset($item['warrantyId'])) {
+                            $warrantyDetail = ProductWarranty::find($item['warrantyId']);
+                            if ($warrantyDetail) {
+                                $priceIncrease = (float) $warrantyDetail->price_increase;
+                                $totalPrice += $priceIncrease * (float) $item['quantity'];
+                                $pricePerUnit += $priceIncrease;
+                            }
+                        }
+                    
                         $orderDetails = new OrderDetails();
                         $orderDetails->order_id = $order->id;
                         $orderDetails->product_id = $item['productId'];
                         $orderDetails->quantity = $item['quantity'];
                         $orderDetails->size = $item['size'] ?? null;
                         $orderDetails->color = $item['color'] ?? null;
-                        $orderDetails->price_per_unit = (float) $item['price'] ?? null;
+                        $orderDetails->warranty_id = $item['warrantyId'] ?? null;
+                        $orderDetails->price_per_unit = $pricePerUnit;
                         $orderDetails->total_price = $totalPrice;
                         if (auth()->check()) {
                             $orderDetails->created_by = auth()->user()->id;
                         }
                         $orderDetails->save();
-    
+
                         $stock = Stock::where('product_id', $item['productId'])
-                            ->where('size', $item['size'])
-                            ->where('color', $item['color'])
+                            // ->where('size', $item['size'])
+                            // ->where('color', $item['color'])
                             ->first();
-    
+
                         if ($stock) {
                             $stock->quantity -= $item['quantity'];
                             $stock->save();
@@ -621,8 +680,12 @@ class OrderController extends Controller
 
     public function orderSuccess(Request $request)
     {
-        $pdfUrl = $request->input('pdfUrl');
-        return view('frontend.order.success', compact('pdfUrl'));
+        $decodedId = base64_decode($request->order_id);
+        $orderDetails = Order::findOrFail($decodedId);
+    
+        $pdfUrl = route('generate-pdf', ['encoded_order_id' => base64_encode($orderDetails->id)]);
+    
+        return view('frontend.order.success', compact('pdfUrl', 'orderDetails'));
     }
 
     public function generatePDF($encoded_order_id)

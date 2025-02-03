@@ -459,7 +459,7 @@
                                 </div> --}}
                             </div>
 
-                            <div class="text-center mt-2">
+                            <div class="text-center mt-2 d-none">
                                 <p class="fw-bold">Express checkout</p>
                                 <div class="checkout-buttons">
                                     <button class="paypal" id="paypalOrderBtn">
@@ -478,22 +478,12 @@
                             </div>
 
                             <div class="checkout-container">
-                                <div class="buttons-container d-none">
-                                    <button class="checkout-btn paypal">
-                                        <img src="{{asset('paypal.png')}}" alt="Paypal" class="img-fluid" style="height: 30px">
-                                    </button>
-                                    <button class="checkout-btn paylater">
-                                        <img src="{{asset('paylater.png')}}" alt="Pay Later" class="img-fluid" style="height: 20px">
-                                        Pay Later
-                                    </button>
-                                    <button class="checkout-btn gpay">
-                                        <img src="{{asset('stripe.png')}}" alt="GPay" class="img-fluid" style="height: 30px">
-                                    </button>
-                                </div>
 
                                 <div class="bg-light">
                                     <div class="accordion accordion-flush" id="accordionFlushExample">
-                                        <div class="accordion-item rounded-3 border-0 shadow mb-2">
+
+
+                                        {{-- <div class="accordion-item rounded-3 border-0 shadow mb-2">
                                             <h2 class="accordion-header">
                                                 <button class="accordion-button border-bottom collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
                                                 <img src="{{asset('paypal.png')}}" alt="Paypal" class="img-fluid" style="height: 30px">
@@ -573,17 +563,22 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
 
                                         <div class="accordion-item rounded-3 border-0 mb-2 shadow">
                                             <h2 class="accordion-header">
                                                 <button class="accordion-button border-bottom collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
-                                                    <img src="{{asset('iwoco.jpg')}}" alt="GPay" class="img-fluid" style="height: 30px">
+                                                    <img src="{{asset('cashon.png')}}" alt="Cash on delivery" class="img-fluid" style="height: 30px">
                                                 </button>
                                             </h2>
                                             <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                                                 <div class="accordion-body">
-                                                        Coming Soon...
+                                                    <div class="">
+                                                        <img src="{{asset('cashon.png')}}" alt="Cash on delivery" class="img-fluid" style="height: 80px">
+                                                    </div>
+                                                    <div class="coupon_inner input-group-append mt-3">
+                                                        <button type="submit" id="codBtn" class="btn btn-primary"><span>Make Order</span></button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -683,7 +678,7 @@
          const cardElement = elements.create('card');
          cardElement.mount('#card-element');
 
-        $('#placeOrderBtn, #paypalOrderBtn, #stripePayBtn, #payLaterBtn, #payPalBtn').click(async function() {
+        $('#placeOrderBtn, #paypalOrderBtn, #stripePayBtn, #payLaterBtn, #codBtn, #payPalBtn').click(async function() {
 
             if ($('#email').val().trim() === '') {
                 var errorHtml = '<div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>';
@@ -714,6 +709,8 @@
                 paymentMethod = 'paypal';
             } else if ($(this).attr('id') === 'payPalBtn') {
                 paymentMethod = 'paypal';
+            } else if ($(this).attr('id') === 'codBtn') {
+                paymentMethod = 'cashondelivery';
             }
 
             $('#loader').show();
@@ -721,6 +718,7 @@
             $('#paypalOrderBtn').prop('disabled', true);
             $('#stripePayBtn').prop('disabled', true);
             $('#payLaterBtn').prop('disabled', true);
+            $('#codBtn').prop('disabled', true);
             $('#payPalBtn').prop('disabled', true);
 
             var formData = {
@@ -853,6 +851,7 @@
                     $('#stripePayBtn').prop('disabled', false);
                     $('#payLaterBtn').prop('disabled', false);
                     $('#payPalBtn').prop('disabled', false);
+                    $('#codBtn').prop('disabled', false);
                 }
             });
 
