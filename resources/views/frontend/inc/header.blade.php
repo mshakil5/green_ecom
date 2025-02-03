@@ -207,6 +207,18 @@
 
 
                                 
+                                <li class="has-dropdown">
+                                    <a class="main-menu-link" href="#">Corporate</a>
+                                </li>
+
+                                <li class="has-dropdown">
+                                    <a class="main-menu-link" href="#">OFFER zone</a>
+                                </li>
+
+                                
+                                <li class="has-dropdown d-none">
+                                    <a class="main-menu-link {{ request()->routeIs('frontend.shop') ? 'active' : '' }}" href="{{ route('frontend.shop') }}">Shop</a>
+                                </li>
 
 
                                 <li class="has-dropdown d-none">

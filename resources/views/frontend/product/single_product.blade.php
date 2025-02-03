@@ -171,17 +171,30 @@
                         </ul>
                     </div>
 
-                    <div class="product-details-text">
+                    <div class="">
                         <p>{!! $product->short_description !!}</p>
                         <br>
                         
+                    </div>
+
+                    <div style="display: flex; align-items: center; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 5px;width: 100%;">
+                        <i class="fa fa-truck" style="font-size: 24px; color: red; margin-right: 10px;"></i>
+                        <span style="font-size: 16px; color: #000;">Delivery all over Bangladesh</span>
+                    </div>
+                    <div style="display: flex; align-items: center; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 5px;width: 100%;">
+                        <i class="fa fa-truck" style="font-size: 24px; color: red; margin-right: 10px;"></i>
+                        <span style="font-size: 16px; color: #000;">Home delivery within 2-5 days</span>
+                    </div>
+                    <div style="display: flex; align-items: center; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 5px;width: 100%;">
+                        <i class="fa fa-check-circle" style="font-size: 24px; color: green; margin-right: 10px;"></i>
+                        <span style="font-size: 16px; color: #000;">Cash on Delivery Available</span>
                     </div>
                     
 
                     <div class="product-details-social">
                         <ul>
                             <li><a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(Request::fullUrl()) }}"  class="facebook" target="_blank">
-                                <i class="fa fa-facebook"></i>
+                                <i class="fa fa-facebook"></i> Share
                             </a></li>
                         </ul>
                     </div>

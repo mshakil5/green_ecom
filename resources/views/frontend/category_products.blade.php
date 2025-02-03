@@ -1,9 +1,7 @@
 @extends('frontend.layouts.app')
 @section('title', $title)
 @section('content')
-@php
-    $company = \App\Models\CompanyDetails::select('company_logo','currency')->first();
-@endphp
+
 
 <!-- ...:::: Start Shop Section:::... -->
 <div class="shop-section mt-5">
@@ -99,9 +97,8 @@
                                                                     </li>
                 
                                                                     <li>
-                                                                        <a href="#"
-                                                                            class="quick-view" title="Quick View" 
-                                                                            data-bs-toggle="modal" data-bs-target="#modalQuickview"
+                                                                        <a href="#offcanvas"
+                                                                            class="add-to-cart offcanvas-toggle" title="Add to cart"
                                                                             data-product-id="{{ $product->id }}"
                                                                             data-offer-id="0" 
                                                                             data-price="{{ $product->price }}"
@@ -128,10 +125,11 @@
                                                         <div class="product-default-content">
                                                             <h6 class="product-default-link"><a href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a></h6>
                                                             @php
-                                                                $delprice = $product->price * .10 + $product->price;
+                                                                $discountPercent = $product->discount_percent ?? 10;
+                                                                $delprice = $product->price * ($discountPercent / 100) + $product->price;
                 
                                                             @endphp
-                                                            <span class="product-default-price"><del class="product-default-price-off">{{$company->currency}}{{ number_format($delprice, 2) }}</del> {{$company->currency}}{{ number_format($product->price, 2) }}</span>
+                                                            <span class="product-default-price"><del class="product-default-price-off">{{$currency}}{{ number_format($delprice, 2) }}</del> {{$currency}}{{ number_format($product->price, 2) }}</span>
                                                         </div>
                                                     </div> <!-- End Product Defautlt Single -->
                                                 </div>
