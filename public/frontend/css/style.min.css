@@ -14212,7 +14212,7 @@ input {
   padding: 2px;
   display: block;
   min-height: 200px;
-  width: 100%;
+  /* width: 100%; */
   -o-object-fit: cover;
   object-fit: cover
 }

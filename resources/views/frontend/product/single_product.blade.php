@@ -363,7 +363,7 @@
                                     <div class="product-default-single border-around">
                                         <div class="product-img-warp">
                                             <a href="{{ route('product.show', $product->slug) }}" class="product-default-img-link">
-                                                <img src="{{ asset('images/products/' . $product->feature_image) }}" alt="{{ $product->name }}" class="product-default-img img-fluid" style="height: 200px; object-fit: cover;">
+                                                <img src="{{ asset('images/products/' . $product->feature_image) }}" alt="{{ $product->name }}" class="product-default-img img-fluid d-block mx-auto" style="height: 200px; object-fit: cover;">
                                             </a>
                                             <div class="product-action-icon-link">
                                                 <ul>

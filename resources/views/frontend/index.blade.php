@@ -113,7 +113,7 @@
                                         <div class="product-default-single border-around">
                                             <div class="product-img-warp">
                                                 <a href="{{ route('product.show', $product->slug) }}" class="product-default-img-link">
-                                                    <img src="{{ asset('images/products/' . $product->feature_image) }}" alt="{{ $product->name }}" class="product-default-img img-fluid" style="height: 200px; object-fit: cover;">
+                                                    <img src="{{ asset('images/products/' . $product->feature_image) }}" alt="{{ $product->name }}" class="product-default-img img-fluid d-block mx-auto" style="height: 200px; object-fit: cover;">
                                                 </a>
                                                 <div class="product-action-icon-link">
                                                     <ul>
@@ -260,7 +260,7 @@
                                                             <div class="product-default-single border-around" data-aos="fade-up"  data-aos-delay="0">
                                                                 <div class="product-img-warp">
                                                                     <a href="{{ route('product.show', $product->slug) }}" class="product-default-img-link">
-                                                                        <img src="{{ asset('images/products/' . $product->feature_image) }}" alt="{{ $product->name }}" class="product-default-img img-fluid" style="height: 200px; object-fit: cover;">
+                                                                        <img src="{{ asset('images/products/' . $product->feature_image) }}" alt="{{ $product->name }}" class="product-default-img img-fluid d-block mx-auto" style="height: 200px; object-fit: cover;">
                                                                     </a>
                                                                     <div class="product-action-icon-link">
                                                                         <ul>
@@ -414,7 +414,7 @@
                                                         <div class="product-default-single border-around" data-aos="fade-up"  data-aos-delay="0">
                                                             <div class="product-img-warp">
                                                                 <a href="{{ route('product.show', $product->slug) }}" class="product-default-img-link">
-                                                                    <img src="{{ asset('images/products/' . $product->feature_image) }}" alt="{{ $product->name }}" class="product-default-img img-fluid" style="height: 200px; object-fit: cover;">
+                                                                    <img src="{{ asset('images/products/' . $product->feature_image) }}" alt="{{ $product->name }}" class="product-default-img img-fluid d-block mx-auto" style="height: 200px; object-fit: cover;">
                                                                 </a>
                                                                 <div class="product-action-icon-link">
                                                                     <ul>
@@ -540,7 +540,7 @@
                                 <div class="product-default-single border-around">
                                     <div class="product-img-warp">
                                         <a href="{{ route('product.show', $product->slug) }}" class="product-default-img-link">
-                                            <img src="{{ asset('images/products/' . $product->feature_image) }}" alt="{{ $product->name }}" class="product-default-img img-fluid" style="height: 200px; object-fit: cover;">
+                                            <img src="{{ asset('images/products/' . $product->feature_image) }}" alt="{{ $product->name }}" class="product-default-img img-fluid d-block mx-auto" style="height: 200px; object-fit: cover;">
                                         </a>
                                         <div class="product-action-icon-link">
                                             <ul>
@@ -645,7 +645,7 @@
                         <div class="col-lg-4 col-md-6 col-12">
                             <div class="banner-single" data-aos="fade-up" data-aos-delay="{{ $index * 200 }}">
                                 <a href="{{ route('flash-sells.show', $flashSell->slug) }}" class="banner-img-link">
-                                    <img class="banner-img img-fluid" src="{{ asset('images/flash_sell/' . $flashSell->flash_sell_image) }}" alt="{{ $flashSell->flash_sell_name }}" style="height: 200px; object-fit: cover;">
+                                    <img class="banner-img img-fluid d-block mx-auto" src="{{ asset('images/flash_sell/' . $flashSell->flash_sell_image) }}" alt="{{ $flashSell->flash_sell_name }}" style="height: 200px; object-fit: cover;">
                                 </a>
                                 <div class="banner-content">
                                     <span class="banner-text-tiny">{{ $flashSell->flash_sell_name }}</span>

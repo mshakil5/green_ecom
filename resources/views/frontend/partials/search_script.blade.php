@@ -26,7 +26,7 @@
                                         <div class="product product-2" style="height: 100%; display: flex; flex-direction: column;">
                                             <figure class="product-media">
                                                 <a href="{{ route('product.show', '') }}/${product.slug}">
-                                                    <x-image-with-loader src="{{ asset('/images/products/') }}/${product.feature_image}" alt="${product.name}" class="product-image" style="height: 200px; object-fit: cover;" />
+                                                    <x-image-with-loader src="{{ asset('/images/products/') }}/${product.feature_image}" alt="${product.name}" class="product-image d-block mx-auto" style="height: 200px; object-fit: cover;" />
                                                 </a>
                                                 ${product.stock && product.stock.quantity > 0 ? `
                                                     <div class="product-action-vertical">
