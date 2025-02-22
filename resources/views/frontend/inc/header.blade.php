@@ -20,9 +20,9 @@
                 </div>
                 <div class="col-6">
                     <div class="header-search">
-                        <form action="#" method="post">
+                        <form action="{{ route('getDiffTypeProducts', ['ptype' => 'search-products']) }}">
                             <div class="header-search-box default-search-style d-flex">
-                                <input class="default-search-style-input-box border-around border-right-none" type="search" placeholder="Search entire store here ..." required>
+                                <input class="default-search-style-input-box border-around border-right-none" type="search" name="query" placeholder="Search entire store here ..." required>
                                 <button class="default-search-style-input-btn" type="submit"><i class="icon-search"></i></button>
                             </div>
                         </form>
