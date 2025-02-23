@@ -416,6 +416,14 @@
                     </a>
                 </li>
 
+                  <!-- corporate -->
+                  <li class="nav-item">
+                    <a href="{{ route('admin.corporate') }}" class="nav-link {{ (request()->is('admin/corporate*')) ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-truck"></i>
+                        <p>corporate</p>
+                    </a>
+                </li>
+
                 <!-- payment gateway -->
                 <li class="nav-item d-none">
                     <a href="{{ route('allpaymentgateways') }}" class="nav-link {{ (request()->is('admin/payment-gateway*')) ? 'active' : '' }}">

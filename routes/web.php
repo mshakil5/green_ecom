@@ -52,6 +52,9 @@ Route::get('/privacy-policy', [FrontendController::class, 'privacyPolicy'])->nam
 Route::get('/terms-and-conditions', [FrontendController::class, 'termsAndConditions'])->name('frontend.terms-and-conditions');
 
 
+Route::get('/corporate', [FrontendController::class, 'corporate'])->name('corporate');
+
+
 //Check Coupon
 Route::get('/check-coupon', [FrontendController::class, 'checkCoupon']);
 Route::get('/order/success', [OrderController::class, 'orderSuccess'])->name('order.success');

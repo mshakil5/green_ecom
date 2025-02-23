@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\InHouseSellController;
 use App\Http\Controllers\Admin\DeliveryManController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\BundleProductController;
+use App\Http\Controllers\Admin\CorporateController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\PaymentGatewayController;
@@ -105,6 +106,10 @@ Route::group(['prefix' =>'admin/', 'middleware' => ['auth', 'is_admin']], functi
     // company information
     Route::get('/company-details', [CompanyDetailsController::class, 'index'])->name('admin.companyDetail');
     Route::post('/company-details', [CompanyDetailsController::class, 'update'])->name('admin.companyDetails');
+
+    // corporate
+    Route::get('/corporate', [CorporateController::class, 'index'])->name('admin.corporate');
+    Route::post('/corporate', [CorporateController::class, 'update'])->name('admin.corporateupdate');
 
     // Category crud
     Route::get('/category', [CategoryController::class, 'getCategory'])->name('allcategory');

@@ -208,12 +208,12 @@
 
                                 
                                 <li class="has-dropdown">
-                                    <a class="main-menu-link" href="#">Corporate</a>
+                                    <a class="main-menu-link" href="{{route('corporate')}}">Corporate</a>
                                 </li>
 
-                                <li class="has-dropdown">
+                                {{-- <li class="has-dropdown">
                                     <a class="main-menu-link" href="#">OFFER zone</a>
-                                </li>
+                                </li> --}}
 
                                 
                                 <li class="has-dropdown d-none">
