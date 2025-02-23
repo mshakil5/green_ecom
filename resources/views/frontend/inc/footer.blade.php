@@ -56,9 +56,9 @@
                                 
                             </ul>
                             <ul class="footer-menu-nav">
-                                <li><a href="{{ route('cart.index') }}">Privacy</a></li>
-                                <li><a href="{{ route('wishlist.index') }}">Terms and conditions</a></li>
-                                <li><a href="{{ route('frontend.shopdetail') }}">About Us</a></li>
+                                <li><a href="{{ route('frontend.privacy-policy') }}">Privacy</a></li>
+                                <li><a href="{{ route('frontend.terms-and-conditions') }}">Terms and conditions</a></li>
+                                <li><a href="{{ route('corporate') }}">About Us</a></li>
                                 <li><a href="{{ route('frontend.contact') }}">Contact Us</a></li>
                             </ul>
                         </div>
