@@ -216,9 +216,9 @@
                             <li><a class="nav-link active" data-bs-toggle="tab" href="#description">
                                     <h5>Description</h5>
                                 </a></li>
-                            {{-- <li><a class="nav-link" data-bs-toggle="tab" href="#specification">
+                            <li><a class="nav-link" data-bs-toggle="tab" href="#specification">
                                     <h5>Specification</h5>
-                                </a></li> --}}
+                                </a></li>
                             <li><a class="nav-link" data-bs-toggle="tab" href="#review">
                                     <h5>Reviews ({{ $product->reviews->count() }})</h5>
                                 </a></li>
@@ -236,24 +236,9 @@
                                     </div>
                                 </div> <!-- End Product Details Tab Content Singel -->
                                 <!-- Start Product Details Tab Content Singel -->
-                                <div class="tab-pane d-none" id="specification">
+                                <div class="tab-pane" id="specification">
                                     <div class="single-tab-content-item">
-                                        <table class="table table-bordered mb-20">
-                                            <tbody>
-                                                <tr>
-                                                    <th scope="row">Compositions</th>
-                                                    <td>Polyester</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">Styles</th>
-                                                    <td>Girly</td>
-                                                <tr>
-                                                    <th scope="row">Properties</th>
-                                                    <td>Short Dress</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <p>Fashion has been creating well-designed collections since 2010. The brand offers feminine designs delivering stylish separates and statement dresses which have since evolved into a full ready-to-wear collection in which every item is a vital part of a woman's wardrobe. The result? Cool, easy, chic looks with youthful elegance and unmistakable signature style. All the beautiful pieces are made in Italy and manufactured with the greatest attention. Now Fashion extends to a range of accessories including shoes, hats, belts and more!</p>
+                                        {!! $product->specification !!}
                                     </div>
                                 </div> <!-- End Product Details Tab Content Singel -->
                                 <!-- Start Product Details Tab Content Singel -->

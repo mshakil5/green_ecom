@@ -36,8 +36,9 @@ class ProductController extends Controller
     public function productStore(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:products,name,NULL,id,category_id,' . $request->category_id,
             'short_description' => 'nullable|string',
+            'specification' => 'nullable|string',
             'description' => 'required|string',
             'price' => 'required|numeric',
             'category_id' => 'required',
@@ -67,7 +68,8 @@ class ProductController extends Controller
 
         $chkSlug = Product::where('slug', $pslug)->exists();
         if ($chkSlug) {
-            $pslug = $pslug . '-' . mt_rand(10000000, 99999999);
+            $categoryName = Category::where('id', $request->category_id)->value('name');
+            $pslug = $pslug . '-' . Str::slug($categoryName);
         }
 
         $product = new Product;
@@ -75,6 +77,7 @@ class ProductController extends Controller
         $product->qty = $request->input('qty');
         $product->slug = $pslug;
         $product->short_description = $request->input('short_description', null);
+        $product->specification = $request->input('specification', null);
         $product->description = $request->input('description');
         $product->price = $request->input('price');
         $product->category_id = $request->input('category_id');
@@ -143,8 +146,9 @@ class ProductController extends Controller
     public function productUpdate(Request $request)
     {
        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:products,name,' . $request->codeid . ',id,category_id,' . $request->category_id,
             'short_description' => 'nullable|string',
+            'specification' => 'nullable|string',
             'description' => 'required|string',
             'price' => 'required|numeric',
             'category_id' => 'required',
@@ -173,14 +177,17 @@ class ProductController extends Controller
 
         $chkSlug = Product::where('slug', $pslug)->exists();
         if ($chkSlug) {
-            $pslug = $pslug . '-' . mt_rand(10000000, 99999999);
+            $categoryName = Category::where('id', $request->category_id)->value('name');
+            $pslug = $pslug . '-' . Str::slug($categoryName);
         }
+        
         $product = Product::find($request->codeid);
 
         $product->name = $request->input('name');
         $product->qty = $request->input('qty');
         $product->slug = $pslug;
         $product->short_description = $request->input('short_description', null);
+        $product->specification = $request->input('specification', null);
         $product->description = $request->input('description');
         $product->price = $request->input('price');
         $product->category_id = $request->input('category_id');

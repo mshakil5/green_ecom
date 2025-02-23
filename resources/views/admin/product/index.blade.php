@@ -61,6 +61,12 @@
                                     <label for="description">Long Description<span style="color: red;">*</span></label>
                                     <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter product long description"></textarea>
                                 </div>
+
+                                
+                                <div class="form-group col-md-12">
+                                    <label for="description">Specification<span style="color: red;">*</span></label>
+                                    <textarea class="form-control" id="specification" name="specification" rows="3" placeholder="Enter product specification"></textarea>
+                                </div>
                             </div>
 
                             <div class="form-row">
@@ -431,6 +437,7 @@
                 form_data.append("name", $("#name").val());
                 form_data.append("description", $("#description").val());
                 form_data.append("short_description", $("#short_description").val());
+                form_data.append("specification", $("#specification").val());
                 form_data.append("price", $("#price").val());
                 form_data.append("category_id", $("#category").val());
                 form_data.append("sub_category_id", $("#subcategory").val());
@@ -519,7 +526,7 @@
               var form_data = new FormData();
                 form_data.append("name", $("#name").val());
                 form_data.append("description", $("#description").val());
-                form_data.append("short_description", $("#short_description").val());
+                form_data.append("specification", $("#specification").val());
                 form_data.append("price", $("#price").val());
                 form_data.append("category_id", $("#category").val());
                 form_data.append("sub_category_id", $("#subcategory").val());
@@ -670,6 +677,8 @@
 
           $("#short_description").val(data.short_description);
           $('#short_description').summernote('code', data.short_description);
+          $("#specification").val(data.specification);
+          $('#specification').summernote('code', data.specification);
 
           $("#price").val(data.price);
           $("#product_code").val(data.product_code);
@@ -741,6 +750,7 @@
           $('#imageUpload1').val('');
           $("#description").summernote('code', '');
           $("#short_description").summernote('code', '');
+          $("#specification").summernote('code', '');
           $('#addBtn').attr('disabled', false);
       }
   });
@@ -910,7 +920,7 @@
 
 <script>
     $(document).ready(function() {
-        $('#description, #short_description').summernote({
+        $('#description, #short_description, #specification').summernote({
             height: 100,
         });
     });
