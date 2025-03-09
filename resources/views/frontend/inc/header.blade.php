@@ -142,12 +142,12 @@
 
 
                                 @php
-                                    $Service = \App\Models\Category::with('subcategories')->where('status', 1)->where('type', 'Service')->get();
+                                    $service = \App\Models\Category::with('subcategories')->where('status', 1)->where('type', 'Service')->get();
                                 @endphp
 
-                                @if ($Service->count() > 0)
+                                @if ($service->count() > 0)
                                 <li class="has-dropdown">
-                                    <a href="{{ route('frontend.shop') }}">Service @if ($service->count() > 0) <i class="fa fa-angle-down"></i> @endif</a>
+                                    <a href="{{ route('frontend.shop') }}">Repair Services @if ($service->count() > 0) <i class="fa fa-angle-down"></i> @endif</a>
                                     <ul class="sub-menu">
                                         @foreach($service as $category)
                                             {{-- @if($category->products->count() > 0) --}}
@@ -179,7 +179,7 @@
 
                                 @if ($VRF->count() > 0)
                                 <li class="has-dropdown">
-                                    <a href="{{ route('frontend.shop') }}">VRF @if ($VRF->count() > 0) <i class="fa fa-angle-down"></i> @endif</a>
+                                    <a href="{{ route('frontend.shop') }}">VRF Solutions @if ($VRF->count() > 0) <i class="fa fa-angle-down"></i> @endif</a>
                                     <ul class="sub-menu">
                                         @foreach($VRF as $category)
                                             {{-- @if($category->products->count() > 0) --}}

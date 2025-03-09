@@ -11,7 +11,7 @@ class CategoryController extends Controller
 {
     public function getCategory()
     {
-        $data = Category::orderby('id','DESC')->get();
+        $data = Category::select('image', 'name', 'type', 'id')->orderby('id','DESC')->get();
         return view('admin.category.index', compact('data'));
     }
 
