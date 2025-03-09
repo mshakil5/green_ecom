@@ -85,6 +85,8 @@
                                     <th>Title</th>
                                     <th>Sub Title</th>
                                     <th>Link</th>
+                                    <th>Image</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -95,6 +97,13 @@
                                     <td>{{ $data->title }}</td>
                                     <td>{{ $data->sub_title }}</td>
                                     <td>{{ $data->link }}</td>
+                                    <td> <a href="{{ asset('images/slider/'.$data->image) }}" target="_blank"> <img src="{{ asset('images/slider/'.$data->image) }}" alt="" style="max-width: 100px; width: 100%; height: auto;"> </a> </td>
+                                    <td>
+                                      <div class="custom-control custom-switch">
+                                          <input type="checkbox" class="custom-control-input toggle-status" id="customSwitchStatus{{ $data->id }}" data-id="{{ $data->id }}" {{ $data->status == 1 ? 'checked' : '' }}>
+                                          <label class="custom-control-label" for="customSwitchStatus{{ $data->id }}"></label>
+                                      </div>
+                                  </td>
                                     <td>
                                         <a id="EditBtn" rid="{{ $data->id }}">
                                             <i class="fa fa-edit" style="color: #2196f3; font-size:16px;"></i>
@@ -127,7 +136,37 @@
       }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });
 </script>
-
+<script>
+    $(document).ready(function() {
+        $('.toggle-status').change(function() {
+            var brand_id = $(this).data('id');
+            var status = $(this).prop('checked') ? 1 : 0;
+  
+            $.ajax({
+                url: '/admin/slider-status',
+                method: "POST",
+                data: {
+                    brand_id: brand_id,
+                    status: status,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(d) {
+                    swal({
+                        text: "Status Chnaged successfully",
+                        icon: "success",
+                        button: {
+                            text: "OK",
+                            className: "swal-button--confirm"
+                        }
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+  </script>
 <script>
   $(document).ready(function () {
       $("#addThisFormContainer").hide();

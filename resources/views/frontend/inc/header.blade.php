@@ -67,7 +67,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <div class="main-menu">
+                    <div class="main-menu text-center">
                         <nav>
                             <ul>
                                 <li class="has-dropdown">
@@ -105,7 +105,6 @@
                                             @endif
                                         @endforeach
                                     </ul>
-                                    
                                 </li>
 
                                 @php
@@ -117,29 +116,26 @@
                                     <a href="{{ route('frontend.shop') }}">Spare Parts @if ($spare->count() > 0) <i class="fa fa-angle-down"></i> @endif</a>
                                     <ul class="sub-menu">
                                         @foreach($spare as $category)
-                                            {{-- @if($category->products->count() > 0) --}}
-                                                <li class="has-dropdown">
-                                                    <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}
-                                                        @if($category->subcategories->count() > 0)
-                                                            <span style="float: right;"><i class="fa fa-angle-right"></i></span>
-                                                        @endif
-                                                    </a>
+                                            <li class="has-dropdown">
+                                                <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}
                                                     @if($category->subcategories->count() > 0)
-                                                        <ul class="sub-menu" style="display: none; position: absolute; left: 100%; top: 0;">
-                                                            @foreach($category->subcategories as $subcategory)
-                                                                <li class="has-dropdown">
-                                                                    <a href="{{ route('subcategory.show', $subcategory->slug) }}">{{ $subcategory->name }}</a>
-                                                                </li>
-                                                            @endforeach
-                                                        </ul>
+                                                        <span style="float: right;"><i class="fa fa-angle-right"></i></span>
                                                     @endif
-                                                </li>
-                                            {{-- @endif --}}
+                                                </a>
+                                                @if($category->subcategories->count() > 0)
+                                                    <ul class="sub-menu" style="display: none; position: absolute; left: 100%; top: 0;">
+                                                        @foreach($category->subcategories as $subcategory)
+                                                            <li class="has-dropdown">
+                                                                <a href="{{ route('subcategory.show', $subcategory->slug) }}">{{ $subcategory->name }}</a>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                @endif
+                                            </li>
                                         @endforeach
                                     </ul>
                                 </li>
                                 @endif
-
 
                                 @php
                                     $service = \App\Models\Category::with('subcategories')->where('status', 1)->where('type', 'Service')->get();
@@ -150,24 +146,22 @@
                                     <a href="{{ route('frontend.shop') }}">Repair Services @if ($service->count() > 0) <i class="fa fa-angle-down"></i> @endif</a>
                                     <ul class="sub-menu">
                                         @foreach($service as $category)
-                                            {{-- @if($category->products->count() > 0) --}}
-                                                <li class="has-dropdown">
-                                                    <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}
-                                                        @if($category->subcategories->count() > 0)
-                                                            <span style="float: right;"><i class="fa fa-angle-right"></i></span>
-                                                        @endif
-                                                    </a>
+                                            <li class="has-dropdown">
+                                                <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}
                                                     @if($category->subcategories->count() > 0)
-                                                        <ul class="sub-menu" style="display: none; position: absolute; left: 100%; top: 0;">
-                                                            @foreach($category->subcategories as $subcategory)
-                                                                <li class="has-dropdown">
-                                                                    <a href="{{ route('subcategory.show', $subcategory->slug) }}">{{ $subcategory->name }}</a>
-                                                                </li>
-                                                            @endforeach
-                                                        </ul>
+                                                        <span style="float: right;"><i class="fa fa-angle-right"></i></span>
                                                     @endif
-                                                </li>
-                                            {{-- @endif --}}
+                                                </a>
+                                                @if($category->subcategories->count() > 0)
+                                                    <ul class="sub-menu" style="display: none; position: absolute; left: 100%; top: 0;">
+                                                        @foreach($category->subcategories as $subcategory)
+                                                            <li class="has-dropdown">
+                                                                <a href="{{ route('subcategory.show', $subcategory->slug) }}">{{ $subcategory->name }}</a>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                @endif
+                                            </li>
                                         @endforeach
                                     </ul>
                                 </li>
@@ -182,94 +176,35 @@
                                     <a href="{{ route('frontend.shop') }}">VRF Solutions @if ($VRF->count() > 0) <i class="fa fa-angle-down"></i> @endif</a>
                                     <ul class="sub-menu">
                                         @foreach($VRF as $category)
-                                            {{-- @if($category->products->count() > 0) --}}
-                                                <li class="has-dropdown">
-                                                    <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}
-                                                        @if($category->subcategories->count() > 0)
-                                                            <span style="float: right;"><i class="fa fa-angle-right"></i></span>
-                                                        @endif
-                                                    </a>
+                                            <li class="has-dropdown">
+                                                <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}
                                                     @if($category->subcategories->count() > 0)
-                                                        <ul class="sub-menu" style="display: none; position: absolute; left: 100%; top: 0;">
-                                                            @foreach($category->subcategories as $subcategory)
-                                                                <li class="has-dropdown">
-                                                                    <a href="{{ route('subcategory.show', $subcategory->slug) }}">{{ $subcategory->name }}</a>
-                                                                </li>
-                                                            @endforeach
-                                                        </ul>
+                                                        <span style="float: right;"><i class="fa fa-angle-right"></i></span>
                                                     @endif
-                                                </li>
-                                            {{-- @endif --}}
+                                                </a>
+                                                @if($category->subcategories->count() > 0)
+                                                    <ul class="sub-menu" style="display: none; position: absolute; left: 100%; top: 0;">
+                                                        @foreach($category->subcategories as $subcategory)
+                                                            <li class="has-dropdown">
+                                                                <a href="{{ route('subcategory.show', $subcategory->slug) }}">{{ $subcategory->name }}</a>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                @endif
+                                            </li>
                                         @endforeach
                                     </ul>
                                 </li>
                                 @endif
 
-
-                                
                                 <li class="has-dropdown">
                                     <a class="main-menu-link" href="{{route('corporate')}}">Corporate</a>
                                 </li>
-
-                                {{-- <li class="has-dropdown">
-                                    <a class="main-menu-link" href="#">OFFER zone</a>
-                                </li> --}}
-
-                                
-                                <li class="has-dropdown d-none">
-                                    <a class="main-menu-link {{ request()->routeIs('frontend.shop') ? 'active' : '' }}" href="{{ route('frontend.shop') }}">Shop</a>
-                                </li>
-
-
-                                <li class="has-dropdown d-none">
-                                    <a href="">Brands<i class="fa fa-angle-down"></i></a>
-                                    <ul class="sub-menu">
-                                        @foreach($categories as $category)
-                                            @if($category->products->count() > 0)
-                                                <li>
-                                                    <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}</a>
-                                                </li>
-                                            @endif
-                                        @endforeach
-                                    </ul>
-                                </li>
-
-
-
-                                {{-- @foreach ($categories->take(2) as $category)
-                                <li class="has-dropdown has-megaitem">
-                                    <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }} <i class="fa fa-angle-down"></i></a>
-                                    
-                                    <!-- Mega Menu -->
-                                    <div class="mega-menu">
-                                        <ul class="mega-menu-inner">
-                                            <!-- Mega Menu Sub Link -->
-                                            <li class="mega-menu-item">
-                                                <a href="#" class="mega-menu-item-title">Shop Layouts</a>
-                                                <ul class="mega-menu-sub">
-                                                    <li><a href="shop-grid-sidebar-left.html">Grid Left Sidebar</a></li>
-                                                    <li><a href="shop-grid-sidebar-right.html">Grid Right Sidebar</a></li>
-                                                </ul>
-                                            </li>
-                                            
-                                        </ul>
-                                        
-                                    </div>
-                                </li>
-                                @endforeach --}}
-
-
-                                
-
-
-
-                                
                             </ul>
                         </nav>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div>    </div>
     </div>
 </header>
 <script>
