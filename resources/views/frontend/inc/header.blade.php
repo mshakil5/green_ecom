@@ -117,7 +117,7 @@
                                     <a href="{{ route('frontend.shop') }}">Spare Parts @if ($spare->count() > 0) <i class="fa fa-angle-down"></i> @endif</a>
                                     <ul class="sub-menu">
                                         @foreach($spare as $category)
-                                            @if($category->products->count() > 0)
+                                            {{-- @if($category->products->count() > 0) --}}
                                                 <li class="has-dropdown">
                                                     <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}
                                                         @if($category->subcategories->count() > 0)
@@ -134,7 +134,7 @@
                                                         </ul>
                                                     @endif
                                                 </li>
-                                            @endif
+                                            {{-- @endif --}}
                                         @endforeach
                                     </ul>
                                 </li>
@@ -150,7 +150,7 @@
                                     <a href="{{ route('frontend.shop') }}">Service @if ($service->count() > 0) <i class="fa fa-angle-down"></i> @endif</a>
                                     <ul class="sub-menu">
                                         @foreach($service as $category)
-                                            @if($category->products->count() > 0)
+                                            {{-- @if($category->products->count() > 0) --}}
                                                 <li class="has-dropdown">
                                                     <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}
                                                         @if($category->subcategories->count() > 0)
@@ -167,7 +167,7 @@
                                                         </ul>
                                                     @endif
                                                 </li>
-                                            @endif
+                                            {{-- @endif --}}
                                         @endforeach
                                     </ul>
                                 </li>
@@ -182,7 +182,7 @@
                                     <a href="{{ route('frontend.shop') }}">VRF @if ($VRF->count() > 0) <i class="fa fa-angle-down"></i> @endif</a>
                                     <ul class="sub-menu">
                                         @foreach($VRF as $category)
-                                            @if($category->products->count() > 0)
+                                            {{-- @if($category->products->count() > 0) --}}
                                                 <li class="has-dropdown">
                                                     <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}
                                                         @if($category->subcategories->count() > 0)
@@ -199,7 +199,7 @@
                                                         </ul>
                                                     @endif
                                                 </li>
-                                            @endif
+                                            {{-- @endif --}}
                                         @endforeach
                                     </ul>
                                 </li>

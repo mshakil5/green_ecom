@@ -20,7 +20,7 @@
     $data = \App\Models\Corporate::where('id', 1)->first();
 @endphp
 
-<div class="about-us-top-area">
+<div class="about-us-top-area d-none">
     <div class="container">
         <div class="row">
             <div class="col-12" data-aos="fade-up"  data-aos-delay="0">
@@ -29,5 +29,18 @@
         </div>
     </div>
 </div>
+
+
+<div class="about-us-top-area">
+    <div class="container">
+        <div class="row">
+            <div class="pdf-viewer">
+                <iframe src="{{ asset('profile.pdf') }}" style="width: 100%; height: 100vh;" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 @endsection
