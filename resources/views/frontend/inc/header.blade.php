@@ -1,4 +1,17 @@
 
+<style>
+    .header-sticky-logo {
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .sticky-visible .header-sticky-logo {
+        display: block !important;
+    }
+
+    .sticky-visible .header-bottom-logo {
+        display: none !important;
+    }
+</style>
 
 
 
@@ -67,25 +80,69 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <div class="main-menu text-center">
-                        <nav>
-                            <ul>
-                                <li class="has-dropdown">
-                                    <a class="main-menu-link {{ request()->routeIs('frontend.homepage') ? 'active' : '' }}" href="{{ route('frontend.homepage') }}">Home</a>
-                                </li>
-                                <li class="has-dropdown d-none">
-                                    <a class="main-menu-link {{ request()->routeIs('frontend.shop') ? 'active' : '' }}" href="{{ route('frontend.shop') }}">Shop</a>
-                                </li>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="header-sticky-logo d-none" style="flex: 0 0 auto;">
+                            <a href="{{ route('frontend.homepage') }}">
+                                <img 
+                                    src="{{ asset('images/company/' . $company->company_logo) }}" 
+                                    alt="{{ $company->company_name }}" 
+                                    width="100" 
+                                    height="40" 
+                                    style="object-fit: contain; display: inline-block;">
+                            </a>
+                        </div>
 
-                                @php
-                                    $products = \App\Models\Category::with('subcategories')->where('status', 1)->where('type', 'Product')->get();
-                                @endphp
+                        <div style="width: 120px;"></div>
 
-                                <li class="has-dropdown">
-                                    <a href="">Product @if ($products->count() > 0) <i class="fa fa-angle-down"></i> @endif</a>
-                                    <ul class="sub-menu">
-                                        @foreach($products as $category)
-                                            @if($category->products->count() > 0)
+                        <div class="main-menu flex-grow-1 text-center ms-4">
+                            <nav>
+                                <ul class="d-flex align-items-center gap-3 mb-0">
+                                    <li class="has-dropdown">
+                                        <a class="main-menu-link {{ request()->routeIs('frontend.homepage') ? 'active' : '' }}" href="{{ route('frontend.homepage') }}">Home</a>
+                                    </li>
+                                    <li class="has-dropdown d-none">
+                                        <a class="main-menu-link {{ request()->routeIs('frontend.shop') ? 'active' : '' }}" href="{{ route('frontend.shop') }}">Shop</a>
+                                    </li>
+
+                                    @php
+                                        $products = \App\Models\Category::with('subcategories')->where('status', 1)->where('type', 'Product')->get();
+                                    @endphp
+
+                                    <li class="has-dropdown">
+                                        <a href="">Product @if ($products->count() > 0) <i class="fa fa-angle-down"></i> @endif</a>
+                                        <ul class="sub-menu">
+                                            @foreach($products as $category)
+                                                @if($category->products->count() > 0)
+                                                    <li class="has-dropdown">
+                                                        <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}
+                                                            @if($category->subcategories->count() > 0)
+                                                                <span style="float: right;"><i class="fa fa-angle-right"></i></span>
+                                                            @endif
+                                                        </a>
+                                                        @if($category->subcategories->count() > 0)
+                                                            <ul class="sub-menu" style="display: none; position: absolute; left: 100%; top: 0;">
+                                                                @foreach($category->subcategories as $subcategory)
+                                                                    <li class="has-dropdown">
+                                                                        <a href="{{ route('subcategory.show', $subcategory->slug) }}">{{ $subcategory->name }}</a>
+                                                                    </li>
+                                                                @endforeach
+                                                            </ul>
+                                                        @endif
+                                                    </li>
+                                                @endif
+                                            @endforeach
+                                        </ul>
+                                    </li>
+
+                                    @php
+                                        $spare = \App\Models\Category::with('subcategories')->where('status', 1)->where('type', 'Spare')->get();
+                                    @endphp
+
+                                    @if ($spare->count() > 0)
+                                    <li class="has-dropdown">
+                                        <a href="{{ route('frontend.shop') }}">Spare Parts @if ($spare->count() > 0) <i class="fa fa-angle-down"></i> @endif</a>
+                                        <ul class="sub-menu">
+                                            @foreach($spare as $category)
                                                 <li class="has-dropdown">
                                                     <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}
                                                         @if($category->subcategories->count() > 0)
@@ -102,109 +159,82 @@
                                                         </ul>
                                                     @endif
                                                 </li>
-                                            @endif
-                                        @endforeach
-                                    </ul>
-                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </li>
+                                    @endif
 
-                                @php
-                                    $spare = \App\Models\Category::with('subcategories')->where('status', 1)->where('type', 'Spare')->get();
-                                @endphp
+                                    @php
+                                        $service = \App\Models\Category::with('subcategories')->where('status', 1)->where('type', 'Service')->get();
+                                    @endphp
 
-                                @if ($spare->count() > 0)
-                                <li class="has-dropdown">
-                                    <a href="{{ route('frontend.shop') }}">Spare Parts @if ($spare->count() > 0) <i class="fa fa-angle-down"></i> @endif</a>
-                                    <ul class="sub-menu">
-                                        @foreach($spare as $category)
-                                            <li class="has-dropdown">
-                                                <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}
+                                    @if ($service->count() > 0)
+                                    <li class="has-dropdown">
+                                        <a href="{{ route('frontend.shop') }}">Repair Services @if ($service->count() > 0) <i class="fa fa-angle-down"></i> @endif</a>
+                                        <ul class="sub-menu">
+                                            @foreach($service as $category)
+                                                <li class="has-dropdown">
+                                                    <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}
+                                                        @if($category->subcategories->count() > 0)
+                                                            <span style="float: right;"><i class="fa fa-angle-right"></i></span>
+                                                        @endif
+                                                    </a>
                                                     @if($category->subcategories->count() > 0)
-                                                        <span style="float: right;"><i class="fa fa-angle-right"></i></span>
+                                                        <ul class="sub-menu" style="display: none; position: absolute; left: 100%; top: 0;">
+                                                            @foreach($category->subcategories as $subcategory)
+                                                                <li class="has-dropdown">
+                                                                    <a href="{{ route('subcategory.show', $subcategory->slug) }}">{{ $subcategory->name }}</a>
+                                                                </li>
+                                                            @endforeach
+                                                        </ul>
                                                     @endif
-                                                </a>
-                                                @if($category->subcategories->count() > 0)
-                                                    <ul class="sub-menu" style="display: none; position: absolute; left: 100%; top: 0;">
-                                                        @foreach($category->subcategories as $subcategory)
-                                                            <li class="has-dropdown">
-                                                                <a href="{{ route('subcategory.show', $subcategory->slug) }}">{{ $subcategory->name }}</a>
-                                                            </li>
-                                                        @endforeach
-                                                    </ul>
-                                                @endif
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </li>
-                                @endif
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </li>
+                                    @endif
 
-                                @php
-                                    $service = \App\Models\Category::with('subcategories')->where('status', 1)->where('type', 'Service')->get();
-                                @endphp
+                                    @php
+                                        $VRF = \App\Models\Category::with('subcategories')->where('status', 1)->where('type', 'VRF')->get();
+                                    @endphp
 
-                                @if ($service->count() > 0)
-                                <li class="has-dropdown">
-                                    <a href="{{ route('frontend.shop') }}">Repair Services @if ($service->count() > 0) <i class="fa fa-angle-down"></i> @endif</a>
-                                    <ul class="sub-menu">
-                                        @foreach($service as $category)
-                                            <li class="has-dropdown">
-                                                <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}
+                                    @if ($VRF->count() > 0)
+                                    <li class="has-dropdown">
+                                        <a href="{{ route('frontend.shop') }}">VRF Solutions @if ($VRF->count() > 0) <i class="fa fa-angle-down"></i> @endif</a>
+                                        <ul class="sub-menu">
+                                            @foreach($VRF as $category)
+                                                <li class="has-dropdown">
+                                                    <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}
+                                                        @if($category->subcategories->count() > 0)
+                                                            <span style="float: right;"><i class="fa fa-angle-right"></i></span>
+                                                        @endif
+                                                    </a>
                                                     @if($category->subcategories->count() > 0)
-                                                        <span style="float: right;"><i class="fa fa-angle-right"></i></span>
+                                                        <ul class="sub-menu" style="display: none; position: absolute; left: 100%; top: 0;">
+                                                            @foreach($category->subcategories as $subcategory)
+                                                                <li class="has-dropdown">
+                                                                    <a href="{{ route('subcategory.show', $subcategory->slug) }}">{{ $subcategory->name }}</a>
+                                                                </li>
+                                                            @endforeach
+                                                        </ul>
                                                     @endif
-                                                </a>
-                                                @if($category->subcategories->count() > 0)
-                                                    <ul class="sub-menu" style="display: none; position: absolute; left: 100%; top: 0;">
-                                                        @foreach($category->subcategories as $subcategory)
-                                                            <li class="has-dropdown">
-                                                                <a href="{{ route('subcategory.show', $subcategory->slug) }}">{{ $subcategory->name }}</a>
-                                                            </li>
-                                                        @endforeach
-                                                    </ul>
-                                                @endif
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </li>
-                                @endif
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </li>
+                                    @endif
 
-                                @php
-                                    $VRF = \App\Models\Category::with('subcategories')->where('status', 1)->where('type', 'VRF')->get();
-                                @endphp
-
-                                @if ($VRF->count() > 0)
-                                <li class="has-dropdown">
-                                    <a href="{{ route('frontend.shop') }}">VRF Solutions @if ($VRF->count() > 0) <i class="fa fa-angle-down"></i> @endif</a>
-                                    <ul class="sub-menu">
-                                        @foreach($VRF as $category)
-                                            <li class="has-dropdown">
-                                                <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}
-                                                    @if($category->subcategories->count() > 0)
-                                                        <span style="float: right;"><i class="fa fa-angle-right"></i></span>
-                                                    @endif
-                                                </a>
-                                                @if($category->subcategories->count() > 0)
-                                                    <ul class="sub-menu" style="display: none; position: absolute; left: 100%; top: 0;">
-                                                        @foreach($category->subcategories as $subcategory)
-                                                            <li class="has-dropdown">
-                                                                <a href="{{ route('subcategory.show', $subcategory->slug) }}">{{ $subcategory->name }}</a>
-                                                            </li>
-                                                        @endforeach
-                                                    </ul>
-                                                @endif
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </li>
-                                @endif
-
-                                <li class="has-dropdown">
-                                    <a class="main-menu-link" href="{{route('corporate')}}">Corporate</a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
+                                    <li class="has-dropdown">
+                                        <a class="main-menu-link" href="{{route('corporate')}}">Corporate</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div style="width: 120px;"></div>
+                    </div>    
                 </div>
-            </div>    </div>
+            </div>    
+        </div>
     </div>
 </header>
 <script>
@@ -217,6 +247,18 @@
         });
     });
 </script>
+
+<script>
+    window.addEventListener('scroll', function () {
+        const header = document.querySelector('.header-bottom');
+        if (window.scrollY > 50) {
+            header.classList.add('sticky-visible');
+        } else {
+            header.classList.remove('sticky-visible');
+        }
+    });
+</script>
+
 
 
 <!-- ...:::: Start Mobile Header Section:::... -->
