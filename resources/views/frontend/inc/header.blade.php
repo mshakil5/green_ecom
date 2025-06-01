@@ -86,8 +86,8 @@
                                 <img 
                                     src="{{ asset('images/company/' . $company->company_logo) }}" 
                                     alt="{{ $company->company_name }}" 
-                                    width="100" 
-                                    height="40" 
+                                    width="150" 
+                                    height="60" 
                                     style="object-fit: contain; display: inline-block;">
                             </a>
                         </div>

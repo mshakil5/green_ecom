@@ -17647,7 +17647,7 @@ table {
   z-index: 99;
   width: 100%;
   top: 0;
-  background: #ea1c26;
+  background: #000000;
   -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, .1);
   box-shadow: 0 0 2px rgba(0, 0, 0, .1);
   -webkit-animation-name: fadeInDown;
