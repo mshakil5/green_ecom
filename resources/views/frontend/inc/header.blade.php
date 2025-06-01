@@ -96,7 +96,7 @@
 
                         <div class="main-menu flex-grow-1 text-center ms-4">
                             <nav>
-                                <ul class="d-flex align-items-center gap-3 mb-0">
+                                <ul class="d-flex align-items-center mb-0">
                                     <li class="has-dropdown">
                                         <a class="main-menu-link {{ request()->routeIs('frontend.homepage') ? 'active' : '' }}" href="{{ route('frontend.homepage') }}">Home</a>
                                     </li>
