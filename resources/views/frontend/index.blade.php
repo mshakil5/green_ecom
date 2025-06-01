@@ -1,10 +1,6 @@
 @extends('frontend.layouts.app')
 
 @section('content')
-@php
-    $company = \App\Models\CompanyDetails::select('company_logo','currency')->first();
-@endphp
-
 
     <!-- Intro Slider Start-->
     @if($section_status->slider == 1 && count($sliders) > 0)

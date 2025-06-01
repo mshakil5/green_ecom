@@ -23,6 +23,7 @@ use App\Models\Slider;
 use App\Models\CouponUsage;
 use App\Models\Brand;
 use App\Models\ProductReview;
+use Illuminate\Support\Facades\Cache;
 
 class FrontendController extends Controller
 {
@@ -49,8 +50,8 @@ class FrontendController extends Controller
         $baseProductQuery = Product::query()
             ->active()
             ->notInSpecialOrFlash()
-            ->with('stock')
-            ->select('id', 'name', 'feature_image', 'price', 'slug');
+            ->with(['stock', 'images']) // Add 'images' to eager loading
+            ->select('id', 'name', 'feature_image', 'price', 'slug', 'short_description', 'watch');
 
         // Product Sections
         $featuredProducts = (clone $baseProductQuery)
@@ -84,7 +85,9 @@ class FrontendController extends Controller
             ->get();
 
         // Others
-        $section_status = SectionStatus::first();
+        $section_status = Cache::remember('section_status', now()->addHours(24), function () {
+            return SectionStatus::first();
+        });
 
         $advertisements = Ad::active()->select('type', 'link', 'image')->get();
 
@@ -92,24 +95,35 @@ class FrontendController extends Controller
             ->select('id', 'name', 'image')
             ->get();
 
-        $sliders = Slider::latest()
-            ->select('title', 'sub_title', 'image', 'link')
-            ->get();
+        $sliders = Cache::remember('sliders', now()->addHours(24), function () {
+            return Slider::latest()
+                ->select('title', 'sub_title', 'image', 'link')
+                ->take(5)
+                ->get();
+        });
 
-        $categories = Category::active()
-            ->with(['products' => function ($query) {
-                $query->select('id', 'category_id', 'name', 'price', 'slug', 'feature_image', 'watch', 'short_description')
-                    ->orderByDesc('watch');
-            }])
-            ->select('id', 'name', 'image', 'slug')
-            ->orderBy('id', 'asc')
-            ->get();
+        $categories = Cache::remember('categories', now()->addHours(24), function () {
+            return Category::active()
+                ->with(['products' => function ($query) {
+                    $query->select('id', 'category_id', 'name', 'price', 'slug', 'feature_image', 'watch', 'short_description')
+                        ->with(['stock', 'images'])
+                        ->orderbyDesc('watch');
+                }])
+                ->select('id', 'name', 'image', 'slug')
+                ->orderBy('id', 'asc')
+                ->get();
+        });
+
+
+        $company = Cache::remember('company_details', now()->addHours(24), function () {
+            return CompanyDetails::select('company_logo', 'currency', 'google_map', 'home_footer')->first();
+        });
 
         return view('frontend.index', compact(
             'specialOffers', 'flashSells', 'featuredProducts',
             'trendingProducts', 'currency', 'recentProducts',
             'popularProducts', 'section_status', 'advertisements',
-            'suppliers', 'sliders', 'categories', 'mostViewedProducts'
+            'suppliers', 'sliders', 'categories', 'mostViewedProducts', 'company'
         ));
     }
 
