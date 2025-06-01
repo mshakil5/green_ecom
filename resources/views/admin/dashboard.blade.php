@@ -165,7 +165,7 @@
                                       @else
                                           A new item has been ordered.
                                       @endif
-                                      <span style="color: #28a745; font-weight: bold;">Net Amount: ৳{{ number_format($order->net_amount, 2) }}</span>
+                                      <span style="color: #28a745; font-weight: bold;">Net Amount: <b>৳</b>{{ number_format($order->net_amount, 2) }}</span>
                                   </span>
 
                                   <small class="badge {{ $badgeClass }}"><i class="far fa-clock"></i> {{ $timeDiff }}</small>
