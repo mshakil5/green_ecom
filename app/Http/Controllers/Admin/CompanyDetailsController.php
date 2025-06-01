@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CompanyDetails;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class CompanyDetailsController extends Controller
 {
     public function index()
     {
         $data = CompanyDetails::all()->first();
+        Cache::forget('key');
         return view('admin.company.index',compact('data'));
     }
 

@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Slider;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
 class SliderController extends Controller
 {
     public function getSlider()
     {
         $data = Slider::orderby('id','DESC')->get();
+        Cache::forget('key');
         return view('admin.slider.index', compact('data'));
     }
 

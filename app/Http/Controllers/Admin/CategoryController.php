@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
 class CategoryController extends Controller
 {
     public function getCategory()
     {
         $data = Category::select('image', 'name', 'type', 'id')->orderby('id','DESC')->get();
+        Cache::forget('key');
         return view('admin.category.index', compact('data'));
     }
 
