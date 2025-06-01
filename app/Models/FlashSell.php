@@ -13,4 +13,17 @@ class FlashSell extends Model
     {
         return $this->hasMany(FlashSellDetails::class);
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
+
+    public function scopeDateActive($query, $date = null)
+    {
+        $date = $date ?? now();
+        return $query->whereDate('start_date', '<=', $date)
+                    ->whereDate('end_date', '>=', $date);
+    }
+
 }

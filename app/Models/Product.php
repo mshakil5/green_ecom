@@ -9,7 +9,7 @@ class Product extends Model
 {
     use HasFactory;
     
-     protected $fillable = [
+    protected $fillable = [
         'name',
         'slug',
         'description',
@@ -93,4 +93,17 @@ class Product extends Model
     {
         return $this->hasMany(ProductReview::class);
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
+
+    public function scopeNotInSpecialOrFlash($query)
+    {
+        return $query
+            ->whereDoesntHave('specialOfferDetails')
+            ->whereDoesntHave('flashSellDetails');
+    }
+
 }

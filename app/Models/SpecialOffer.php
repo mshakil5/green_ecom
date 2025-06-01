@@ -13,4 +13,22 @@ class SpecialOffer extends Model
     {
         return $this->hasMany(SpecialOfferDetails::class);
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
+
+    public function scopeDateActive($query, $date = null)
+    {
+        $date = $date ?? now();
+        return $query->whereDate('start_date', '<=', $date)
+                    ->whereDate('end_date', '>=', $date);
+    }
+
+    
+
+
+
+
 }

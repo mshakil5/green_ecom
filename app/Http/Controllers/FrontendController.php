@@ -30,93 +30,89 @@ class FrontendController extends Controller
     {
         $currency = CompanyDetails::value('currency');
 
+        $today = now();
+
+        // Promotions
         $specialOffers = SpecialOffer::select('offer_image', 'offer_name', 'offer_title', 'slug')
-            ->where('status', 1)
-            ->whereDate('start_date', '<=', now())
-            ->whereDate('end_date', '>=', now())
+            ->active()
+            ->dateActive($today)
             ->latest()
             ->get();
 
         $flashSells = FlashSell::select('flash_sell_image', 'flash_sell_name', 'flash_sell_title', 'slug')
-            ->where('status', 1)
-            ->whereDate('start_date', '<=', now())
-            ->whereDate('end_date', '>=', now())
+            ->active()
+            ->dateActive($today)
             ->latest()
             ->get();
 
-        $featuredProducts = Product::where('status', 1)
+        // Common query base for reusable constraints
+        $baseProductQuery = Product::query()
+            ->active()
+            ->notInSpecialOrFlash()
+            ->with('stock')
+            ->select('id', 'name', 'feature_image', 'price', 'slug');
+
+        // Product Sections
+        $featuredProducts = (clone $baseProductQuery)
             ->where('is_featured', 1)
-            ->whereDoesntHave('specialOfferDetails')
-            ->whereDoesntHave('flashSellDetails')
-            ->with('stock')
-            ->orderBy('id', 'desc')
-            ->select('id', 'name', 'feature_image', 'price', 'slug')
-            ->take(12)
+            ->latest()
+            ->limit(12)
             ->get();
 
-        $trendingProducts = Product::where('status', 1)
+        $trendingProducts = (clone $baseProductQuery)
             ->where('is_trending', 1)
-            ->orderByDesc('id')
-            ->whereDoesntHave('specialOfferDetails')
-            ->whereDoesntHave('flashSellDetails')
-            ->with('stock')
-            ->select('id', 'name', 'feature_image', 'slug', 'price')
-            ->take(12)
+            ->latest()
+            ->limit(12)
             ->get();
 
-        $recentProducts = Product::where('status', 1)
+        $recentProducts = (clone $baseProductQuery)
             ->where('is_recent', 1)
-            ->orderBy('id', 'desc')
-            ->whereDoesntHave('specialOfferDetails')
-            ->whereDoesntHave('flashSellDetails')
-            ->with('stock')
-            ->select('id', 'name', 'feature_image', 'price', 'slug')
-            ->take(12)
+            ->latest()
+            ->limit(12)
             ->get();
 
-        $popularProducts = Product::where('status', 1)
+        $popularProducts = (clone $baseProductQuery)
             ->where('is_popular', 1)
-            ->orderBy('id', 'desc')
-            ->whereDoesntHave('specialOfferDetails')
-            ->whereDoesntHave('flashSellDetails')
-            ->with('stock')
-            ->select('id', 'name', 'feature_image', 'price', 'slug')
-            ->take(12)
+            ->latest()
+            ->limit(12)
             ->get();
 
-        $section_status = SectionStatus::first();
-        
-        $advertisements = Ad::where('status', 1)->select('type', 'link', 'image')->get();
-
-        $suppliers = Supplier::orderBy('id', 'desc')
-                        ->select('id', 'name', 'image')
-                        ->get();
-
-         $sliders = Slider::orderBy('id', 'desc')
-                        ->select('title', 'sub_title', 'image', 'link')
-                        ->get();
-
-        $mostViewedProducts = Product::where('status', 1)
+        $mostViewedProducts = (clone $baseProductQuery)
             ->where('is_recent', 1)
             ->orderByDesc('watch')
-            ->whereDoesntHave('specialOfferDetails')
-            ->whereDoesntHave('flashSellDetails')
-            ->with('stock')
-            ->select('id', 'name', 'feature_image', 'price', 'slug')
-            ->take(12)
+            ->limit(12)
             ->get();
 
-        $categories = Category::where('status', 1)
+        // Others
+        $section_status = SectionStatus::first();
+
+        $advertisements = Ad::active()->select('type', 'link', 'image')->get();
+
+        $suppliers = Supplier::latest()
+            ->select('id', 'name', 'image')
+            ->get();
+
+        $sliders = Slider::latest()
+            ->select('title', 'sub_title', 'image', 'link')
+            ->get();
+
+        $categories = Category::active()
             ->with(['products' => function ($query) {
                 $query->select('id', 'category_id', 'name', 'price', 'slug', 'feature_image', 'watch', 'short_description')
-                    ->orderBy('watch', 'desc');
+                    ->orderByDesc('watch');
             }])
             ->select('id', 'name', 'image', 'slug')
             ->orderBy('id', 'asc')
             ->get();
 
-        return view('frontend.index', compact('specialOffers','flashSells','featuredProducts', 'trendingProducts', 'currency', 'recentProducts', 'popularProducts', 'section_status', 'advertisements', 'suppliers', 'sliders', 'categories', 'mostViewedProducts'));
+        return view('frontend.index', compact(
+            'specialOffers', 'flashSells', 'featuredProducts',
+            'trendingProducts', 'currency', 'recentProducts',
+            'popularProducts', 'section_status', 'advertisements',
+            'suppliers', 'sliders', 'categories', 'mostViewedProducts'
+        ));
     }
+
 
     public function getCategoryProducts(Request $request)
     {
